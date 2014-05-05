@@ -21,7 +21,7 @@ public class WARCInputFormat extends FileInputFormat<LongWritable, WARCWritable>
 
     @Override
     public RecordReader<LongWritable, WARCWritable> createRecordReader(InputSplit split,
-                                                                             TaskAttemptContext context)
+                                                                       TaskAttemptContext context)
             throws IOException, InterruptedException {
         return new WARCReader();
     }
@@ -30,8 +30,7 @@ public class WARCInputFormat extends FileInputFormat<LongWritable, WARCWritable>
         return false;
     }
 
-    public static class WARCReader extends RecordReader<LongWritable, WARCWritable> {
-
+    private static class WARCReader extends RecordReader<LongWritable, WARCWritable> {
         private final LongWritable key = new LongWritable();
         private final WARCWritable value = new WARCWritable();
         private WARCFileReader reader;

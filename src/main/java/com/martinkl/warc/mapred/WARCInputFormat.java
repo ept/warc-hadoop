@@ -29,7 +29,7 @@ public class WARCInputFormat extends FileInputFormat<LongWritable, WARCWritable>
         return false;
     }
 
-    public static class WARCReader implements RecordReader<LongWritable, WARCWritable> {
+    private static class WARCReader implements RecordReader<LongWritable, WARCWritable> {
         private final WARCFileReader reader;
 
         public WARCReader(JobConf job, FileSplit split) throws IOException {

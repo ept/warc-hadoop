@@ -21,7 +21,7 @@ public class WARCOutputFormat extends FileOutputFormat<NullWritable, WARCWritabl
         return new WARCWriter(job, filename, progress);
     }
 
-    public static class WARCWriter implements RecordWriter<NullWritable, WARCWritable> {
+    private static class WARCWriter implements RecordWriter<NullWritable, WARCWritable> {
         private final WARCFileWriter writer;
 
         public WARCWriter(JobConf job, String filename, Progressable progress) throws IOException {
