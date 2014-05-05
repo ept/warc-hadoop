@@ -770,7 +770,7 @@ dt {
   float: left;
   margin-left: 0px;
 }
-#header nav li.downloads {
+#header nav li.docs {
   float: right;
   margin-left: 6px;
 }
@@ -806,32 +806,32 @@ section #title p {
   font-size: 18px;
   text-align: center;
 }
-section #title .credits {
+#footer .credits {
   font-size: 11px;
   font-family: 'OpenSansRegular', "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: normal;
   color: #696969;
   margin-top: -10px;
 }
-section #title .credits.left {
+#footer .credits.left {
   float: left;
 }
-section #title .credits.right {
+#footer .credits.right {
   float: right;
 }
 
 @media print, screen and (max-width: 720px) {
-  #title .credits {
+  #footer .credits {
     display: block;
     width: 100%;
     line-height: 30px;
     text-align: center;
   }
-  #title .credits .left {
+  #footer .credits .left {
     float: none;
     display: block;
   }
-  #title .credits .right {
+  #footer .credits .right {
     float: none;
     display: block;
   }
