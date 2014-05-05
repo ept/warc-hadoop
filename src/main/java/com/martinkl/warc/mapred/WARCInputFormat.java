@@ -15,8 +15,25 @@ import com.martinkl.warc.WARCFileReader;
 import com.martinkl.warc.WARCRecord;
 import com.martinkl.warc.WARCWritable;
 
+/**
+ * Hadoop InputFormat for mapred jobs ('old' API) that want to process data in WARC files.
+ *
+ * Usage:
+ *
+ * ```java
+ * JobConf job = new JobConf(getConf());
+ * job.setInputFormat(WARCInputFormat.class);
+ * ```
+ *
+ * Mappers should use a key of {@link org.apache.hadoop.io.LongWritable} (which is
+ * 1 for the first record in a file, 2 for the second record, etc.) and a value of
+ * {@link WARCWritable}.
+ */
 public class WARCInputFormat extends FileInputFormat<LongWritable, WARCWritable> {
 
+    /**
+     * Opens a WARC file (possibly compressed) for reading, and returns a RecordReader for accessing it.
+     */
     @Override
     public RecordReader<LongWritable, WARCWritable> getRecordReader(InputSplit split, JobConf job, Reporter reporter)
             throws IOException {
@@ -24,6 +41,9 @@ public class WARCInputFormat extends FileInputFormat<LongWritable, WARCWritable>
         return new WARCReader(job, (FileSplit) split);
     }
 
+    /**
+     * Always returns false, as WARC files cannot be split.
+     */
     @Override
     protected boolean isSplitable(FileSystem fs, Path filename) {
         return false;
