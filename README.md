@@ -1,7 +1,7 @@
 WARC Input and Output Formats for Hadoop
 ========================================
 
-This is a simple library for working with [WARC (Web Archive)](http://en.wikipedia.org/wiki/Web_ARChive)
+warc-hadoop is a Java library for working with [WARC (Web Archive)](http://en.wikipedia.org/wiki/Web_ARChive)
 files in Hadoop. It provides InputFormats for reading and OutputFormats for writing WARC files in
 MapReduce jobs (supporting both the 'old' `org.apache.hadoop.mapred` and the 'new'
 `org.apache.hadoop.mapreduce` API).
@@ -94,6 +94,11 @@ doing basic parsing, a file of that size takes less than a minute to process.
 When writing WARC files, this library automatically splits output files into gzipped segments of
 approximately 1GB. You can customize the segment size using the configuration key
 `warc.output.segment.size` (the value is the target segment size in bytes).
+
+Documentation
+-------------
+
+* [Javadocs](http://ept.github.io/warc-hadoop/docs/0.1.0/index.html)
 
 Meta
 ----
