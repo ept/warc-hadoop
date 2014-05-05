@@ -1,10 +1,17 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'signing'
+apply plugin: 'maven'
 
 sourceCompatibility = '1.6'
 
+configurations {
+    markdownDoclet
+}
+
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -12,4 +19,54 @@ dependencies {
     compile 'org.apache.hadoop:hadoop-client:2.2.0'
     testCompile 'junit:junit:4.11'
     testRuntime 'org.slf4j:slf4j-simple:1.7.7'
+    markdownDoclet 'ch.raffael.pegdown-doclet:pegdown-doclet:1.1.1'
 }
+
+task sourcesJar(type: Jar) {
+    classifier 'sources'
+    from sourceSets.main.allJava
+}
+
+task javadocJar(type: Jar) {
+    classifier 'javadoc'
+    from javadoc
+}
+
+// Allow Markdown in Javadocs: http://blog.paralleluniverse.co/2014/05/01/modern-java/
+javadoc.options {
+    docletpath = configurations.markdownDoclet.files.asType(List)
+    doclet = 'ch.raffael.doclets.pegdown.PegdownDoclet'
+    addStringOption('parse-timeout', '10')
+}
+
+artifacts {
+    archives jar, sourcesJar, javadocJar
+}
+
+/* TODO for publishing to Sonatype...
+
+signing {
+    sign configurations.archives
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            pom.project {
+                url 'https://github.com/ept/warc-hadoop'
+                pom.project {
+                    licenses {
+                        license {
+                            name 'The MIT License'
+                            url 'http://opensource.org/licenses/MIT'
+                            distribution 'repo'
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+*/
