@@ -1,6 +1,16 @@
+// Add nexus plugin to build: https://github.com/bmuschko/gradle-nexus-plugin
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-nexus-plugin:2.1.1'
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: 'nexus' // Releasing to Maven Central via Sonatype OSS
+apply plugin: 'com.bmuschko.nexus'
 
 sourceCompatibility = '1.6'
 
@@ -27,45 +37,6 @@ javadoc.options {
     doclet = 'ch.raffael.doclets.pegdown.PegdownDoclet'
     addStringOption('parse-timeout', '10')
     addStringOption('overview', "$projectDir/README.md")
-}
-
-// Add nexus plugin to build: https://github.com/bmuschko/gradle-nexus-plugin
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'org.gradle.api.plugins:gradle-nexus-plugin:0.7'
-    }
-}
-
-// Don't want to store GPG passphrase in a file, so ask for it interactively
-gradle.taskGraph.whenReady {
-    if (signing.required) {
-        if (!project.hasProperty('signing.keyId')) {
-            throw new Exception('A GnuPG key ID is required for signing. Please set signing.keyId=xxxxxxxx in ~/.gradle/gradle.properties.')
-        }
-
-        def keyringFile
-        if (project.hasProperty('signing.secretKeyRingFile')) {
-            keyringFile = new File(project.'signing.secretKeyRingFile')
-        } else {
-            keyringFile = new File(new File(System.getProperty('user.home'), '.gnupg'), 'secring.gpg')
-        }
-
-        if (keyringFile.exists()) {
-            allprojects { ext.'signing.secretKeyRingFile' = keyringFile.getPath() }
-        } else {
-            throw new Exception("GnuPG secret key file $keyringFile not found. Please set signing.secretKeyRingFile=... in ~/.gradle/gradle.properties.")
-        }
-
-        Console console = System.console()
-        console.printf "\n\nThis release $project.version will be signed with your GnuPG key ${project.'signing.keyId'} in $keyringFile.\n\n"
-
-        def password = console.readPassword('Please enter your passphrase to unlock the secret key: ')
-        allprojects { ext.'signing.password' = password }
-    }
 }
 
 // Project metadata, as required by http://central.sonatype.org/pages/requirements.html
