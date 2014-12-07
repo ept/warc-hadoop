@@ -21,14 +21,7 @@ download it.
 Using warc-hadoop
 -----------------
 
-At the moment you have to build it from source, but hopefully I can get it published to a Maven
-repository soon. For now:
-
-    $ git clone https://github.com/ept/warc-hadoop.git
-    $ cd warc-hadoop
-    $ ./gradlew install
-
-Then add the following Maven dependency to your project:
+Add the following Maven dependency to your project:
 
 ```xml
 <dependency>
